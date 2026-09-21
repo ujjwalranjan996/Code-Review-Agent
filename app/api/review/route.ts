@@ -36,8 +36,8 @@ export async function POST(req: NextRequest) {
   }
 
   await upsertReview(base);
-  const origin = (process.env.APP_URL ?? req.nextUrl.origin).replace(/\/$/, "");
-
+const configured = process.env.APP_URL?.trim();
+const origin = (configured && /^https?:\/\//.test(configured) ? configured : req.nextUrl.origin).replace(/\/$/, "");
   try {
     const res = await fetch(webhook, {
       method: "POST",
